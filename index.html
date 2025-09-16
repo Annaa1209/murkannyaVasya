@@ -1,110 +1,146 @@
 <!doctype html>
 <html lang="uk">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>З моменту останньої зустрічі минуло:</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0f172a;
-            --accent: #ff6b6b;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            font-family: 'Comfortaa', sans-serif;
-            background: linear-gradient(135deg, var(--bg), #1e293b);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            text-align: center;
-            padding: 2rem;
-            max-width: 600px;
-        }
-
-        h1 {
-            font-size: clamp(24px, 5vw, 40px);
-            margin-bottom: 2rem;
-        }
-
-        #counter {
-            font-size: clamp(22px, 4vw, 36px);
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        button,
-        input[type="datetime-local"] {
-            padding: 0.75rem 1rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-family: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 600;
-        }
-
-        input[type="datetime-local"] {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            margin-top: 0.5rem;
-        }
-
-        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            cursor: pointer;
-        }
-
-        footer {
-            margin-top: 1rem;
-            font-size: 18px;
-            opacity: 0.8;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>З моменту останньої зустрічі минуло:</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --accent: #ff6b6b;
+    }
+    * {box-sizing: border-box;}
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Comfortaa', sans-serif;
+      background: linear-gradient(135deg, var(--bg), #1e293b);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 600px;
+    }
+    h1 {
+      font-size: clamp(24px, 5vw, 40px);
+      margin-bottom: 2rem;
+    }
+    #counter {
+      font-size: clamp(22px, 4vw, 36px);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    button, input[type="datetime-local"] {
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+    button {
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+    }
+    input[type="datetime-local"] {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      margin-top: 0.5rem;
+    }
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      cursor: pointer;
+    }
+    footer {
+      margin-top: 1rem;
+      font-size: 18px;
+      opacity: 0.8;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>З моменту останньої зустрічі минуло:</h1>
-        <div id="counter">0 дн 0 год 0 сек</div>
-        <div class="controls"> <button id="resetBtn">Натиснути, якщо поступила нова доза задоволення</button>
-            <footer>ехх, як багато часу без муркання</footer> <br /> <br /> <br />
-            <div> <label for="manualDate">Встановити дату вручну:</label> <input type="datetime-local" id="manualDate" step="1"> <button id="setDateBtn">Оновити</button> </div>
-        </div>
-    </div>
-    <script>
-        // Load saved start time from localStorage if available let savedTime = localStorage.getItem('startTime'); let startTime = savedTime ? new Date(savedTime) : new Date(); const counterEl = document.getElementById('counter'); const resetBtn = document.getElementById('resetBtn'); const manualDateInput = document.getElementById('manualDate'); const setDateBtn = document.getElementById('setDateBtn'); function updateCounter() { const now = new Date(); const diffMs = now - startTime; if (diffMs < 0) { counterEl.textContent = 'Дата у майбутньому!'; return; } const totalSeconds = Math.floor(diffMs / 1000); const days = Math.floor(totalSeconds / 86400); const hours = Math.floor((totalSeconds % 86400) / 3600); const seconds = totalSeconds % 60; counterEl.textContent = ${days} дн ${hours} год ${seconds} сек; } setInterval(updateCounter, 1000); updateCounter(); // Reset button stores new time resetBtn.addEventListener('click', () => { startTime = new Date(); localStorage.setItem('startTime', startTime.toISOString()); updateCounter(); }); // Manual date set stores new time setDateBtn.addEventListener('click', () => { const val = manualDateInput.value; if (!val) return alert('Оберіть дату та час'); const chosenDate = new Date(val); if (isNaN(chosenDate.getTime())) { alert('Невірний формат дати'); return; } startTime = chosenDate; localStorage.setItem('startTime', startTime.toISOString()); updateCounter(); }); 
-    </script>
-</body>
+  <div class="container">
+    <h1>З моменту останньої зустрічі минуло:</h1>
+    <div id="counter">0 дн 0 год 0 сек</div>
 
+    <div class="controls">
+      <button id="resetBtn">Натиснути, якщо поступила нова доза задоволення</button>
+
+      <footer>ехх, як багато часу без муркання</footer>
+
+      <div>
+        <label for="manualDate">Встановити дату вручну:</label>
+        <input type="datetime-local" id="manualDate" step="1">
+        <span style="display:block;margin-top:0.5rem;">будь ласка</span>
+        <button id="setDateBtn">Оновити</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Load saved start time from localStorage if available
+    let savedTime = localStorage.getItem('startTime');
+    let startTime = savedTime ? new Date(savedTime) : new Date();
+
+    const counterEl = document.getElementById('counter');
+    const resetBtn = document.getElementById('resetBtn');
+    const manualDateInput = document.getElementById('manualDate');
+    const setDateBtn = document.getElementById('setDateBtn');
+
+    function updateCounter() {
+      const now = new Date();
+      const diffMs = now - startTime;
+      if (diffMs < 0) {
+        counterEl.textContent = 'Дата у майбутньому!';
+        return;
+      }
+      const totalSeconds = Math.floor(diffMs / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const seconds = totalSeconds % 60;
+      counterEl.textContent = `${days} дн ${hours} год ${seconds} сек`;
+    }
+
+    setInterval(updateCounter, 1000);
+    updateCounter();
+
+    // Reset button stores new time
+    resetBtn.addEventListener('click', () => {
+      startTime = new Date();
+      localStorage.setItem('startTime', startTime.toISOString());
+      updateCounter();
+    });
+
+    // Manual date set stores new time
+    setDateBtn.addEventListener('click', () => {
+      const val = manualDateInput.value;
+      if (!val) return alert('Оберіть дату та час');
+      const chosenDate = new Date(val);
+      if (isNaN(chosenDate.getTime())) {
+        alert('Невірний формат дати');
+        return;
+      }
+      startTime = chosenDate;
+      localStorage.setItem('startTime', startTime.toISOString());
+      updateCounter();
+    });
+  </script>
+</body>
 </html>
