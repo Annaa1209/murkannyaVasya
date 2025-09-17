@@ -78,7 +78,7 @@
 <body>
   <div class="container">
     <h1>З моменту останньої зустрічі минуло:</h1>
-    <div id="counter">0 дн 0 год 0 сек</div>
+    <div id="counter">0 дн 0 год 0 хв</div>
 
     <div class="controls">
       <button id="resetBtn">Натиснути, якщо поступила нова доза задоволення</button>
@@ -117,7 +117,7 @@
       const days = Math.floor(totalSeconds / 86400);
       const hours = Math.floor((totalSeconds % 86400) / 3600);
       const seconds = totalSeconds % 60;
-      counterEl.textContent = `${days} дн ${hours} год ${seconds} сек`;
+      counterEl.textContent = `${days} дн ${hours} год ${mins} хв`;
     }
 
     setInterval(updateCounter, 1000);
