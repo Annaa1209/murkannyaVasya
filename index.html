@@ -84,13 +84,12 @@
       <button id="resetBtn">Натиснути, якщо поступила нова доза задоволення</button>
 
       <footer>ехх, як багато часу без муркання</footer>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
+
+      <br/><br/><br/><br/>
       <div>
         <label for="manualDate">Встановити дату вручну:</label>
         <input type="datetime-local" id="manualDate" step="1">
+        <span style="display:block;margin-top:0.5rem;">будь ласка</span>
         <button id="setDateBtn">Оновити</button>
       </div>
     </div>
@@ -113,36 +112,15 @@
         counterEl.textContent = 'Дата у майбутньому!';
         return;
       }
-      const totalSeconds = Math.floor(diffMs / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const seconds = totalSeconds % 60;
-      counterEl.textContent = `${days} дн ${hours} год ${mins} хв`;
+      const totalMinutes = Math.floor(diffMs / 60000); // ms to minutes
+      const days = Math.floor(totalMinutes / 1440);    // 60*24 = 1440
+      const hours = Math.floor((totalMinutes % 1440) / 60);
+      const minutes = totalMinutes % 60;
+      counterEl.textContent = `${days} дн ${hours} год ${minutes} хв`;
     }
 
-    setInterval(updateCounter, 1000);
+    setInterval(updateCounter, 60000); // update every minute
     updateCounter();
 
     // Reset button stores new time
-    resetBtn.addEventListener('click', () => {
-      startTime = new Date();
-      localStorage.setItem('startTime', startTime.toISOString());
-      updateCounter();
-    });
-
-    // Manual date set stores new time
-    setDateBtn.addEventListener('click', () => {
-      const val = manualDateInput.value;
-      if (!val) return alert('Оберіть дату та час');
-      const chosenDate = new Date(val);
-      if (isNaN(chosenDate.getTime())) {
-        alert('Невірний формат дати');
-        return;
-      }
-      startTime = chosenDate;
-      localStorage.setItem('startTime', startTime.toISOString());
-      updateCounter();
-    });
-  </script>
-</body>
-</html>
+    resetBtn.addEventListener('click', () =>
